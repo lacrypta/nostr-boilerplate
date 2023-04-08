@@ -39,6 +39,9 @@ devDependencies:
   '@typescript-eslint/parser':
     specifier: ^5.56.0
     version: 5.56.0(eslint@8.36.0)(typescript@5.0.2)
+  '@webbtc/webln-types':
+    specifier: ^1.0.10
+    version: 1.0.10
   autoprefixer:
     specifier: ^10.4.14
     version: 10.4.14(postcss@8.4.21)
@@ -518,6 +521,10 @@ packages:
     dependencies:
       '@typescript-eslint/types': 5.56.0
       eslint-visitor-keys: 3.4.0
+    dev: true
+
+  /@webbtc/webln-types@1.0.10:
+    resolution: {integrity: sha512-Cy9+uNqvRct3yHB+bs5hJ3idf4VEmnyKxwMpe1/lWpOXbbdi/h7GgAB1JMsnblwN74QKSBEnOPvURoA+RAG9qg==}
     dev: true
 
   /acorn-jsx@5.3.2(acorn@8.8.2):
