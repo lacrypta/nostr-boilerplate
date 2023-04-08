@@ -1,6 +1,7 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import React from "react";
+import Footer from "~/components/footer";
 import Connected from "~/components/main/connected";
 import NotConnected from "~/components/main/notConnected";
 import Title from "~/components/title";
@@ -22,6 +23,7 @@ const Home: NextPage = () => {
           {pubKey ? <Connected /> : <NotConnected />}
         </div>
       </main>
+      <Footer />
     </>
   );
 };
