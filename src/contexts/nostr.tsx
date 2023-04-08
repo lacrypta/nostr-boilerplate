@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import type NostrExtensionProvider from "~/types/nostr";
 
 // Global window.nostr
@@ -12,7 +12,8 @@ declare global {
 export interface NostrContextProps {
   pubKey?: string;
   isEnabled: boolean;
-  login: () => Promise<void>;
+  nostr?: NostrExtensionProvider;
+  login: () => Promise<string | null>;
 }
 
 // NostrProvider props
@@ -23,26 +24,50 @@ export interface NostrProviderProps {
 // NostrContext component
 export const NostrContext = React.createContext<NostrContextProps>({
   isEnabled: false,
-  login: () => Promise.resolve(),
+  login: () => Promise.resolve(null),
 });
 
 // NostrProvider component
 export const NostrProvider = ({ children }: NostrProviderProps) => {
   const [pubKey, setPubKey] = React.useState<string | undefined>(undefined);
+  const [nostr, setNostr] = React.useState<NostrExtensionProvider | undefined>(
+    window.nostr
+  );
   const [isEnabled, setIsEnabled] = React.useState<boolean>(false);
 
   // Login with Alby extension
-  const login = async () => {
-    const rpub = await window.nostr.getPublicKey();
-    setPubKey(rpub);
+  const login = async (): Promise<string | null> => {
+    if (!nostr) {
+      return null;
+    }
+    // Request extension to login
+    const _pubKey = await nostr.getPublicKey();
+
+    // Set state variables
+    setPubKey(_pubKey);
+    setIsEnabled(nostr.enabled);
+
+    // Returns user public key
+    return _pubKey;
+  };
+
+  // Login with Alby extension
+  const loadNostr = () => {
+    setNostr(window.nostr);
     setIsEnabled(window.nostr.enabled);
   };
+
+  // Load nostr on mount
+  useEffect(() => {
+    loadNostr();
+  }, []);
 
   return (
     <NostrContext.Provider
       value={{
         pubKey: pubKey,
         isEnabled,
+        nostr,
         login,
       }}
     >
