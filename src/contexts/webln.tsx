@@ -44,6 +44,9 @@ export const WebLNProvider = ({ children }: WebLNProviderProps) => {
       // Set state variables
       setIsEnabled(enabled);
 
+      // Sets info
+      setInfo(await window.webln?.getInfo());
+
       // Returns user public key
       return await webln.getInfo();
     } catch (e: unknown) {
@@ -54,10 +57,8 @@ export const WebLNProvider = ({ children }: WebLNProviderProps) => {
   };
 
   // Login with Alby extension
-  const loadWebLN = async () => {
+  const loadWebLN = () => {
     setWebLN(window.webln);
-    const info = await window.webln?.getInfo();
-    setInfo(info);
   };
 
   // Load nostr on mount
