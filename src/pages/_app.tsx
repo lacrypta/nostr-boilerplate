@@ -1,14 +1,17 @@
 import { type AppType } from "next/dist/shared/lib/utils";
 import { NostrProvider } from "~/contexts/nostr";
+import { WebLNProvider } from "~/contexts/webln";
 
 import "~/styles/globals.css";
 
-const MyApp: AppType = ({ Component, pageProps }) => {
+const NostrApp: AppType = ({ Component, pageProps }) => {
   return (
-    <NostrProvider>
-      <Component {...pageProps} />
-    </NostrProvider>
+    <WebLNProvider>
+      <NostrProvider>
+        <Component {...pageProps} />
+      </NostrProvider>
+    </WebLNProvider>
   );
 };
 
-export default MyApp;
+export default NostrApp;
