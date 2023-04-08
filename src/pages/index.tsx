@@ -1,8 +1,13 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
+import React from "react";
+import Button from "~/components/button";
+import Title from "~/components/title";
+import { NostrContext } from "~/contexts/nostr";
 
 const Home: NextPage = () => {
+  const { login } = React.useContext(NostrContext);
+
   return (
     <>
       <Head>
