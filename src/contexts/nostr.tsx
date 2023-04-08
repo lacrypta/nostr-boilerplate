@@ -11,7 +11,6 @@ declare global {
 // NostrContext props
 export interface NostrContextProps {
   pubKey?: string;
-  isEnabled: boolean;
   nostr?: NostrExtensionProvider;
   login: () => Promise<string | null>;
 }
@@ -23,7 +22,6 @@ export interface NostrProviderProps {
 
 // NostrContext component
 export const NostrContext = React.createContext<NostrContextProps>({
-  isEnabled: false,
   login: () => Promise.resolve(null),
 });
 
@@ -33,7 +31,6 @@ export const NostrProvider = ({ children }: NostrProviderProps) => {
   const [nostr, setNostr] = React.useState<NostrExtensionProvider | undefined>(
     undefined
   );
-  const [isEnabled, setIsEnabled] = React.useState<boolean>(false);
 
   // Login with Alby extension
   const login = async (): Promise<string | null> => {
@@ -42,12 +39,15 @@ export const NostrProvider = ({ children }: NostrProviderProps) => {
     }
 
     try {
-      // Request extension to login
+      // Enable nostr
+      const info = await nostr.enable();
+      console.info(info);
+
+      // Get public key
       const _pubKey = await nostr.getPublicKey();
 
       // Set state variables
       setPubKey(_pubKey);
-      setIsEnabled(nostr.enabled);
 
       // Returns user public key
       return _pubKey;
@@ -61,7 +61,6 @@ export const NostrProvider = ({ children }: NostrProviderProps) => {
   // Login with Alby extension
   const loadNostr = () => {
     setNostr(window.nostr);
-    setIsEnabled(window.nostr.enabled);
   };
 
   // Load nostr on mount
@@ -73,7 +72,6 @@ export const NostrProvider = ({ children }: NostrProviderProps) => {
     <NostrContext.Provider
       value={{
         pubKey: pubKey,
-        isEnabled,
         nostr,
         login,
       }}
