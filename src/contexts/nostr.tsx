@@ -31,7 +31,7 @@ export const NostrContext = React.createContext<NostrContextProps>({
 export const NostrProvider = ({ children }: NostrProviderProps) => {
   const [pubKey, setPubKey] = React.useState<string | undefined>(undefined);
   const [nostr, setNostr] = React.useState<NostrExtensionProvider | undefined>(
-    window.nostr
+    undefined
   );
   const [isEnabled, setIsEnabled] = React.useState<boolean>(false);
 
@@ -40,15 +40,22 @@ export const NostrProvider = ({ children }: NostrProviderProps) => {
     if (!nostr) {
       return null;
     }
-    // Request extension to login
-    const _pubKey = await nostr.getPublicKey();
 
-    // Set state variables
-    setPubKey(_pubKey);
-    setIsEnabled(nostr.enabled);
+    try {
+      // Request extension to login
+      const _pubKey = await nostr.getPublicKey();
 
-    // Returns user public key
-    return _pubKey;
+      // Set state variables
+      setPubKey(_pubKey);
+      setIsEnabled(nostr.enabled);
+
+      // Returns user public key
+      return _pubKey;
+    } catch (e: unknown) {
+      alert("Please approve Alby request");
+      console.error("Error while login: ", (e as Error).message);
+      return null;
+    }
   };
 
   // Login with Alby extension
