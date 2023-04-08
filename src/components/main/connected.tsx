@@ -7,7 +7,9 @@ export const Connected = () => {
     <div className="space-y-4 text-center">
       <div>PubKey: {pubKey}</div>
       <div className="flex justify-center">
-        <Button>Ohh yeahhh</Button>
+        <Button onClick={() => alert("Estamos laburando. No seas ansiosa")}>
+          Ohh yeahhh
+        </Button>
       </div>
     </div>
   );
