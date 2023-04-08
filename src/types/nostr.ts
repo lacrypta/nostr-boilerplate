@@ -1,4 +1,4 @@
-import type { Event } from "./event";
+import type { UnsignedEvent, Event } from "nostr-tools";
 
 export default interface NostrExtensionProvider {
   nip04: Nip04;
@@ -6,7 +6,7 @@ export default interface NostrExtensionProvider {
 
   enable: () => Promise<{ enabled: boolean }>;
   getPublicKey: () => Promise<string>;
-  signEvent: (event: Event) => Promise<Event>;
+  signEvent: (event: UnsignedEvent) => Promise<Event>;
   signSchnorr: (sigHash: string) => Promise<Buffer>;
   getRelays: () => Promise<string[]>;
   execute: <T>(action: string, args?: Record<string, unknown>) => Promise<T>;
