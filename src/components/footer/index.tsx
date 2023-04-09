@@ -5,7 +5,7 @@ export const Footer = () => {
         Made with ❤️ by{" "}
         <a
           className="text-[#ff00ff] hover:text-[#ff00ff] hover:underline"
-          href="https://twitter.com/la_crypta"
+          href="https://twitter.com/lacryptaoficial"
           target="_blank"
           rel="noreferrer"
         >
