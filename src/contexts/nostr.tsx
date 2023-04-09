@@ -8,25 +8,28 @@ declare global {
   }
 }
 
-// NostrContext props
-export interface NostrContextProps {
+// NostrAccountContext props
+export interface NostrAccountContextProps {
   pubKey?: string;
   nostr?: NostrExtensionProvider;
   login: () => Promise<string | null>;
 }
 
-// NostrProvider props
-export interface NostrProviderProps {
+// NostrAccountProvider props
+export interface NostrAccountProviderProps {
   children: React.ReactNode;
 }
 
-// NostrContext component
-export const NostrContext = React.createContext<NostrContextProps>({
-  login: () => Promise.resolve(null),
-});
+// NostrAccountContext component
+export const NostrAccountContext =
+  React.createContext<NostrAccountContextProps>({
+    login: () => Promise.resolve(null),
+  });
 
-// NostrProvider component
-export const NostrProvider = ({ children }: NostrProviderProps) => {
+// NostrAccountProvider component
+export const NostrAccountProvider = ({
+  children,
+}: NostrAccountProviderProps) => {
   const [pubKey, setPubKey] = React.useState<string | undefined>(undefined);
   const [nostr, setNostr] = React.useState<NostrExtensionProvider | undefined>(
     undefined
@@ -69,7 +72,7 @@ export const NostrProvider = ({ children }: NostrProviderProps) => {
   }, []);
 
   return (
-    <NostrContext.Provider
+    <NostrAccountContext.Provider
       value={{
         pubKey: pubKey,
         nostr,
@@ -77,6 +80,6 @@ export const NostrProvider = ({ children }: NostrProviderProps) => {
       }}
     >
       {children}
-    </NostrContext.Provider>
+    </NostrAccountContext.Provider>
   );
 };

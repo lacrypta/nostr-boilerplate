@@ -1,8 +1,8 @@
 import React from "react";
-import { NostrContext } from "../contexts/nostr";
+import { NostrAccountContext } from "../contexts/nostr";
 
 export const useNOSTR = () => {
-  const nostrContext = React.useContext(NostrContext);
+  const nostrContext = React.useContext(NostrAccountContext);
   return nostrContext;
 };
 
