@@ -1,20 +1,21 @@
 import { useNostrEvents } from "nostr-react";
 
-export const Posts = ({ pubKey }) => {
+interface PostsProps {
+  pubKey: string;
+}
+
+export const Posts = ({ pubKey }: PostsProps) => {
   const { events } = useNostrEvents({
     filter: {
       authors: [pubKey],
-      //   since: dateToUnix(now.current), // all new events from now
-      kinds: [0],
+      // since: dateToUnix(now.current), // all new events from now
+      kinds: [1],
     },
   });
 
   const sorted = events.sort((a, b) => b.created_at - a.created_at);
 
-  console.info("Brought user");
-  console.dir(events);
-
-  return <div>{JSON.stringify(events)}</div>;
+  return <div>{JSON.stringify(sorted)}</div>;
 };
 
 export default Posts;
