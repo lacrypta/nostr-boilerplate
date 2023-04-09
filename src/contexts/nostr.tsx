@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import useWebLN from "~/hooks/useWebLN";
 import type NostrExtensionProvider from "~/types/nostr";
 
 // Global window.nostr
@@ -30,6 +31,8 @@ export const NostrAccountContext =
 export const NostrAccountProvider = ({
   children,
 }: NostrAccountProviderProps) => {
+  const { connect } = useWebLN();
+
   const [pubKey, setPubKey] = React.useState<string | undefined>(undefined);
   const [nostr, setNostr] = React.useState<NostrExtensionProvider | undefined>(
     undefined
@@ -42,6 +45,9 @@ export const NostrAccountProvider = ({
     }
 
     try {
+      // Enable webln
+      await connect();
+
       // Enable nostr
       const info = await nostr.enable();
       console.info(info);
