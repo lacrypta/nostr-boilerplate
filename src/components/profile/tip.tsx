@@ -8,6 +8,7 @@ export const TipButton = ({ lnURLw }: TipButtonProps) => {
   const { webln } = useWebLN();
   const sendTip = async () => {
     try {
+      await webln?.enable();
       await webln?.lnurl(lnURLw);
     } catch (e) {
       console.error(e);
