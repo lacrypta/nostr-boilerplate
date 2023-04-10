@@ -32,13 +32,20 @@ export const Profile = ({ pubKey }: ProfileProps) => {
         )}
       </div>
       <div className="flex flex-col p-4 text-lg">
-        <div className="text-2xl">{userData?.display_name}</div>
+        <div className="text-3xl">{userData?.display_name}</div>
         {userData.about && <div>{userData.about}</div>}
         {userData.nip05 && <div>{userData.nip05}</div>}
-        {userData.website && <div>Sitio web: {userData.website}</div>}
+        {userData.website && (
+          <div>
+            Sitio web:{" "}
+            <a href={userData.website} target="_blank">
+              {userData.website}
+            </a>
+          </div>
+        )}
         <div className="text-xs">{userData?.npub}</div>
         {userData.lud16 && (
-          <div className="flex flex-col justify-end">
+          <div className="mt-3 flex flex-row justify-center">
             <TipButton lnURLw={userData?.lud16} />
           </div>
         )}
