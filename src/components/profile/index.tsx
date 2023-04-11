@@ -1,17 +1,13 @@
 import Image from "next/image";
-import { useProfile } from "nostr-react";
 import TipButton from "./tip";
+import useProfile from "~/hooks/relay/useProfile";
 
 interface ProfileProps {
   pubKey: string;
 }
 
 export const Profile = ({ pubKey }: ProfileProps) => {
-  const { data: userData } = useProfile({
-    pubkey: pubKey,
-  });
-
-  console.dir(userData);
+  const { data: userData } = useProfile(pubKey);
 
   if (!userData) {
     return <div>Cargando perfil...</div>;
