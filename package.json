@@ -11,7 +11,7 @@
   "dependencies": {
     "next": "^13.2.4",
     "nostr-relaypool": "https://github.com/agustinkassis/nostr-relaypool-ts#8831905c4a49b061504c5c4f91e1b915bd96ca13",
-    "nostr-tools": "^1.8.1",
+    "nostr-tools": "^1.8.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "ws": "^8.13.0",
