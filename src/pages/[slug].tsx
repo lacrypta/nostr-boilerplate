@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { nip19 } from "nostr-tools";
 import React, { useEffect, useState } from "react";
 import Footer from "~/components/footer";
+import Posts from "~/components/posts";
 import Profile from "~/components/profile";
 
 const Home: NextPage = () => {
@@ -37,7 +38,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#15162c] to-[#2e026d] text-2xl text-white">
-        <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
+        <div className="container flex w-fit flex-col items-center justify-center gap-12 px-4 py-16">
           <div className="space-y-4 text-center">
             <div className="flex flex-col content-center justify-center">
               {isLoading ? (
@@ -45,7 +46,7 @@ const Home: NextPage = () => {
               ) : (
                 <>
                   <Profile pubKey={profilePubKey} />
-                  {/* <Posts pubKey={pubKey} /> */}
+                  <Posts pubKey={profilePubKey} />
                 </>
               )}
             </div>
