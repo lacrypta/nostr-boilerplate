@@ -13,7 +13,7 @@ export const Profile = ({ pubKey }: ProfileProps) => {
     return <div>Cargando perfil...</div>;
   }
   return (
-    <div className="text-md mb-5 flex flex-col md:flex-row">
+    <div className="text-md mb-5 flex flex-col justify-center md:flex-row">
       <div className="flex flex-row justify-center">
         {userData.picture ? (
           <Image
