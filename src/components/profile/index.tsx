@@ -1,7 +1,7 @@
 import Image from "next/image";
 import TipButton from "./tip";
 import useProfile from "~/hooks/relay/useProfile";
-import BadgesList from "./badges";
+import BadgesList from "../badges";
 
 interface ProfileProps {
   pubKey: string;

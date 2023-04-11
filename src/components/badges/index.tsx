@@ -1,21 +1,17 @@
 import useBadges from "~/hooks/relay/useBadges";
+import { Badge } from "./single";
 
 interface BadgesListProps {
   pubKey: string;
 }
 
 export const BadgesList = ({ pubKey }: BadgesListProps) => {
-  const { data } = useBadges(pubKey);
+  const { data: events } = useBadges(pubKey);
 
-  console.info("CONGUERA!");
-  console.dir(data);
   return (
-    <div>
-      {data.map((badge) => (
-        <div>
-          Badge
-          <div>{JSON.stringify(badge)}</div>
-        </div>
+    <div className="flex flex-col space-x-4">
+      {events.map((event) => (
+        <Badge event={event} />
       ))}
     </div>
   );
