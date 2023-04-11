@@ -46,10 +46,7 @@ export const Profile = ({ pubKey }: ProfileProps) => {
             <TipButton lnURLw={userData?.lud16} />
           </div>
         )}
-        <div>
-          <h2>Badges</h2>
-          <BadgesList pubKey={pubKey} />
-        </div>
+        <BadgesList pubKey={pubKey} />
       </div>
     </div>
   );

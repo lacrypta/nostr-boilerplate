@@ -1,8 +1,9 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
+import { Event } from "nostr-tools";
+import useEvents from "./useEvents";
 import { NostrRelayContext } from "~/contexts/nostrRelay";
-import type { Profile } from "~/types/profile";
 import { RelayPool } from "nostr-relaypool";
-import { Event, Kind } from "nostr-tools";
+import { parseBadgeEvents } from "~/lib/badges";
 
 interface UseProfileReturn {
   data: any[];
@@ -10,41 +11,53 @@ interface UseProfileReturn {
 
 export const useBadges = (pubKey: string): UseProfileReturn => {
   const { relayUrls } = useContext(NostrRelayContext);
-  const [data, setData] = useState<Profile>({ npub: pubKey });
-  const [badges, setBadges] = useState<any[]>([]);
-
   const relayPool = new RelayPool(relayUrls);
 
-  const parseBadge = async (event: Event) => {
-    // relayPool.getEventById({id})
+  const [badges, setBadges] = useState<any[]>([]);
 
-    if (
-      event.tags.findIndex(
-        (tag) => tag[0] === "d" && tag[1] === "profile_badges"
-      ) < 0
-    ) {
-      return null;
-    }
+  const parseProfileBadges = async (event: Event) => {
+    const badgeEvents = parseBadgeEvents(event.tags);
+
+    console.info("OHHHHAYYYYEES");
+    badgeEvents.forEach(async ({ definition, award }) => {
+      console.info("--- BADGE: ---");
+      console.info(definition, award);
+
+      console.info("Looking for definition event: ", definition.id);
+      try {
+        const definitionEvent = await relayPool.getEventById(
+          definition.id,
+          relayUrls,
+          1000
+        );
+
+        console.info("definitionEvent: ");
+        console.dir(definitionEvent);
+        alert(definitionEvent);
+      } catch (e) {
+        console.info("****** Llegoooo?");
+        console.dir(e);
+      }
+
+      console.info("Looking for award event: ", award.id);
+      const awardEvent = await relayPool.getEventById(
+        award.id,
+        relayUrls,
+        1000
+      );
+
+      console.info("awardEvent: ");
+      console.dir(awardEvent);
+      alert(awardEvent);
+    });
+
+    console.info("badgeEvents: ");
+    console.dir(badgeEvents);
+
+    setBadges((prev) => [...prev, event]);
   };
 
-  useEffect(() => {
-    return relayPool.subscribe(
-      [
-        {
-          kinds: [30008],
-          authors: [pubKey],
-        },
-      ],
-      relayUrls,
-      (event, isAfterEose, relayURL) => {
-        // console.log(event, isAfterEose, relayURL);
-        const badge = event;
-        setBadges((prev) => [...prev, badge]);
-      },
-      undefined
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pubKey]);
+  useEvents({ kinds: [30008], authors: [pubKey], onEvent: parseProfileBadges });
 
   return { data: badges };
 };

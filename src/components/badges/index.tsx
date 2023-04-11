@@ -10,6 +10,7 @@ export const BadgesList = ({ pubKey }: BadgesListProps) => {
 
   return (
     <div className="flex flex-col space-x-4">
+      <h2>Badgercitos</h2>
       {events.map((event) => (
         <Badge event={event} />
       ))}
