@@ -9,7 +9,7 @@ export const Connected = () => {
   const router = useRouter();
 
   const goToProfile = useCallback(() => {
-    const npub = nip19.npubEncode(pubKey as string);
+    const npub = nip19.npubEncode(pubKey);
     void router.push(`/${npub}`);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pubKey]);

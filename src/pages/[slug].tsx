@@ -44,7 +44,7 @@ const Home: NextPage = () => {
                 "Cargando"
               ) : (
                 <>
-                  <Profile pubKey={profilePubKey as string} />
+                  <Profile pubKey={profilePubKey} />
                   {/* <Posts pubKey={pubKey} /> */}
                 </>
               )}
