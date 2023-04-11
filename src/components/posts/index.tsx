@@ -9,7 +9,6 @@ interface PostsProps {
 export const Posts = ({ pubKey }: PostsProps) => {
   const { data: events } = useEvents({ authors: [pubKey], kinds: [1] });
 
-  console.dir(events);
   return (
     <div>
       <div className="flex max-w-[500px] flex-col space-y-4 p-5 sm:max-w-[600px] md:max-w-[800px]">
