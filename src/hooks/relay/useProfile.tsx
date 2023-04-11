@@ -2,6 +2,8 @@ import { useContext, useEffect, useState } from "react";
 import { NostrRelayContext } from "~/contexts/nostrRelay";
 import type { Profile } from "~/types/profile";
 import { RelayPool } from "nostr-relaypool";
+import { Kind } from "nostr-tools";
+
 interface UseProfileReturn {
   data: Profile;
 }
@@ -16,8 +18,8 @@ export const useProfile = (pubKey: string): UseProfileReturn => {
     return relayPool.subscribe(
       [
         {
-          kinds: [0],
-          authors: [pubKey, pubKey],
+          kinds: [Kind.Metadata],
+          authors: [pubKey],
         },
       ],
       relayUrls,
