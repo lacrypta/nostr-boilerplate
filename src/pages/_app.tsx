@@ -1,5 +1,5 @@
 import { type AppType } from "next/dist/shared/lib/utils";
-import { NostrAccountProvider } from "~/contexts/nostr";
+import { NostrAccountProvider } from "~/contexts/nostrAccount";
 import { WebLNProvider } from "~/contexts/webln";
 
 import { NostrProvider } from "nostr-react";

@@ -1,5 +1,5 @@
 import React from "react";
-import { NostrAccountContext } from "../contexts/nostr";
+import { NostrAccountContext } from "../contexts/nostrAccount";
 
 export const useNOSTR = () => {
   const nostrContext = React.useContext(NostrAccountContext);
