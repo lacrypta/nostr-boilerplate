@@ -9,6 +9,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "moment": "^2.29.4",
     "next": "^13.2.4",
     "nostr-relaypool": "https://github.com/agustinkassis/nostr-relaypool-ts#8831905c4a49b061504c5c4f91e1b915bd96ca13",
     "nostr-tools": "^1.8.2",
