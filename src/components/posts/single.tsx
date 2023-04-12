@@ -1,5 +1,5 @@
 import moment from "moment";
-import { Event } from "nostr-tools";
+import type { Event } from "nostr-tools";
 
 interface SinglePostProps {
   event: Event;

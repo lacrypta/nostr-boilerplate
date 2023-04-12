@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import useEvents from "~/hooks/relay/useEvents";
 import SinglePost from "./single";
 

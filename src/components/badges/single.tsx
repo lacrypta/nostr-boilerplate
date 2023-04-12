@@ -1,11 +1,15 @@
-import { Event } from "nostr-tools";
+import type { Badge as BadgeType } from "~/types/badge";
 
 interface BadgeProps {
-  event: Event;
+  badge: BadgeType;
 }
 
-export const Badge = ({ event }: BadgeProps) => {
+export const Badge = ({ badge }: BadgeProps) => {
   console.info("Badge");
-  console.dir(event);
-  return <div className="inline-block h-14 w-14 rounded-full bg-white"></div>;
+  console.dir(badge);
+  return (
+    <div className="inline-block h-10 w-10 rounded-full bg-white p-2 text-black">
+      {badge.isLoading ? "L" : JSON.stringify(badge)}
+    </div>
+  );
 };

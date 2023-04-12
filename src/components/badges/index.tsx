@@ -1,4 +1,4 @@
-import useBadges from "~/hooks/relay/useBadges";
+import useProfileBadges from "~/hooks/relay/useProfileBadges";
 import { Badge } from "./single";
 
 interface BadgesListProps {
@@ -6,13 +6,12 @@ interface BadgesListProps {
 }
 
 export const BadgesList = ({ pubKey }: BadgesListProps) => {
-  const { data: events } = useBadges(pubKey);
+  const { data: badges } = useProfileBadges(pubKey);
 
   return (
-    <div className="flex flex-col space-x-4">
-      <h2>Badgercitos</h2>
-      {events.map((event) => (
-        <Badge event={event} />
+    <div className="mt-2 hidden flex-row justify-center space-x-2">
+      {badges.map((badge) => (
+        <Badge key={badge.award.id} badge={badge} />
       ))}
     </div>
   );

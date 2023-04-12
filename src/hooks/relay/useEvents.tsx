@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { NostrRelayContext } from "~/contexts/nostrRelay";
 import { RelayPool } from "nostr-relaypool";
-import { Event } from "nostr-tools";
+import type { Event } from "nostr-tools";
 interface UseEventsReturn {
   data: Event[];
 }
@@ -36,6 +36,7 @@ export const useEvents = ({
         setData((prev) => [...prev, event]);
       }
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return { data };
 };
