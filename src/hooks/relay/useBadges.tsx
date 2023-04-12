@@ -33,7 +33,7 @@ export const useBadges = (pubKey: string): UseProfileReturn => {
 
         console.info("definitionEvent: ");
         console.dir(definitionEvent);
-        alert(definitionEvent);
+        // alert(definitionEvent);
       } catch (e) {
         console.info("****** Llegoooo?");
         console.dir(e);
@@ -48,7 +48,7 @@ export const useBadges = (pubKey: string): UseProfileReturn => {
 
       console.info("awardEvent: ");
       console.dir(awardEvent);
-      alert(awardEvent);
+      // alert(awardEvent);
     });
 
     console.info("badgeEvents: ");
