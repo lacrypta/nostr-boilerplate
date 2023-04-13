@@ -1,5 +1,5 @@
 import useProfileBadges from "~/hooks/relay/useProfileBadges";
-import { Badge } from "./single";
+import { Badge } from ".";
 
 interface BadgesListProps {
   pubKey: string;
