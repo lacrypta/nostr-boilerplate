@@ -6,12 +6,12 @@ interface BadgesListProps {
 }
 
 export const BadgesList = ({ pubKey }: BadgesListProps) => {
-  const { data: badges } = useProfileBadges(pubKey);
+  const { data: preBadges } = useProfileBadges(pubKey);
 
   return (
     <div className="mt-2 hidden flex-row justify-center space-x-2">
-      {badges.map((badge) => (
-        <Badge key={badge.award.id} badge={badge} />
+      {preBadges.map((badge) => (
+        <Badge key={badge.award.id} preBadge={badge} />
       ))}
     </div>
   );

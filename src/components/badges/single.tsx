@@ -1,10 +1,12 @@
-import type { Badge as BadgeType } from "~/types/badge";
+import useBadge from "~/hooks/relay/useBadge";
+import type { PreBadge } from "~/types/badge";
 
 interface BadgeProps {
-  badge: BadgeType;
+  preBadge: PreBadge;
 }
 
-export const Badge = ({ badge }: BadgeProps) => {
+export const Badge = ({ preBadge }: BadgeProps) => {
+  const { badge } = useBadge({ preBadge });
   console.info("Badge");
   console.dir(badge);
   return (

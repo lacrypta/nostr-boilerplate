@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { NostrRelayContext } from "~/contexts/nostrRelay";
 import type { Profile } from "~/types/profile";
-import { RelayPool } from "nostr-relaypool";
 import { Kind } from "nostr-tools";
 
 interface UseProfileReturn {
@@ -9,10 +8,8 @@ interface UseProfileReturn {
 }
 
 export const useProfile = (pubKey: string): UseProfileReturn => {
-  const { relayUrls } = useContext(NostrRelayContext);
+  const { relayUrls, relayPool } = useContext(NostrRelayContext);
   const [data, setData] = useState<Profile>({ npub: pubKey });
-
-  const relayPool = new RelayPool(relayUrls);
 
   useEffect(() => {
     return relayPool.subscribe(
@@ -23,6 +20,7 @@ export const useProfile = (pubKey: string): UseProfileReturn => {
         },
       ],
       relayUrls,
+      // TODO: Validate Last version of profile
       (event, isAfterEose, relayURL) => {
         console.log(event, isAfterEose, relayURL);
         setData(JSON.parse(event.content) as Profile);
