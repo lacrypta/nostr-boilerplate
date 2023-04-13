@@ -31,4 +31,7 @@ export interface BadgeAward {
   created_at: number;
   kind: number;
   awardedPubKey: string;
+  dTag: string;
+  definitionKind: number;
+  definitionOwner: string;
 }

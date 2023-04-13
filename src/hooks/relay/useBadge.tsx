@@ -7,7 +7,6 @@ import {
   parseBadgeDefinitionEvent,
 } from "~/lib/badges";
 import { NostrRelayContext } from "~/contexts/nostrRelay";
-import { parseTags } from "~/lib/utils";
 
 interface UseBadgeProps {
   preBadge: PreBadge;
@@ -22,18 +21,18 @@ interface UseBadgeReturn {
   isLoadingDefinition: boolean;
   isLoadingAward: boolean;
   isLoading: boolean;
-  valid: boolean;
+  isValid?: boolean;
 }
 
 export const useBadge = ({ preBadge }: UseBadgeProps): UseBadgeReturn => {
+  const { relayUrls, relayPool } = useContext(NostrRelayContext);
   const [badge, setBadge] = useState<Badge>();
   const [definitionEvent, setDefinitionEvent] = useState<Event>();
   const [awardEvent, setAwardEvent] = useState<Event>();
   const [isLoadingDefinition, setIsLoadingDefinition] = useState<boolean>(true);
   const [isLoadingAward, setIsLoadingAward] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [isValid, setIsValid] = useState<boolean>(false);
-  const { relayUrls, relayPool } = useContext(NostrRelayContext);
+  const [isValid, setIsValid] = useState<boolean>();
 
   const { definition, award, awardedPubKey, relayUrl } = preBadge;
 
@@ -63,6 +62,7 @@ export const useBadge = ({ preBadge }: UseBadgeProps): UseBadgeReturn => {
       }
     );
 
+    // Get award event
     void relayPool
       .getEventById(award.id, [...relayUrls, relayUrl], undefined)
       .then((event) => {
@@ -77,20 +77,12 @@ export const useBadge = ({ preBadge }: UseBadgeProps): UseBadgeReturn => {
 
   // When finished loading definition and award
   useEffect(() => {
+    // Wait for definition and award to be loaded
     if (isLoadingDefinition || isLoadingAward) {
       return;
     }
 
-    console.info("******* [ BADGE ] *******");
-    console.info("******* Definition *******");
-    console.dir(definitionEvent);
-
-    console.info("******* Award *******");
-    console.dir(awardEvent);
-
-    console.info("******* Tags *******");
-    console.dir(parseTags(definitionEvent.tags));
-
+    // Set badge object
     const _badge: Badge = {
       definition: parseBadgeDefinitionEvent(definitionEvent),
       award: parseBadgeAwardEvent(awardEvent),
@@ -104,7 +96,9 @@ export const useBadge = ({ preBadge }: UseBadgeProps): UseBadgeReturn => {
         _badge.valid = true;
         setIsValid(true);
       })
-      .catch(() => {
+      .catch((e: unknown) => {
+        console.info("Badge is not valid!");
+        console.dir(e);
         _badge.valid = false;
         setIsValid(false);
       })
@@ -121,7 +115,7 @@ export const useBadge = ({ preBadge }: UseBadgeProps): UseBadgeReturn => {
     isLoadingDefinition,
     isLoadingAward,
     isLoading,
-    valid: isValid,
+    isValid,
   };
 };
 

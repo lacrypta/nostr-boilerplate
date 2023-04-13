@@ -1,5 +1,5 @@
 import type { BadgeAward, BadgeDefinition, PreBadge } from "../types/badge";
-import type { Event } from "nostr-tools";
+import { type Event, validateEvent, verifySignature } from "nostr-tools";
 import { parseTags } from "./utils";
 
 export const extractBadges = (event: Event): PreBadge[] => {
@@ -29,10 +29,50 @@ export const extractBadges = (event: Event): PreBadge[] => {
 };
 
 export const isValidBadge = async (
-  _awardEvent: Event,
-  _definitionEvent: Event,
-  _awardedPubKey
+  awardEvent: Event,
+  definitionEvent: Event,
+  awardedPubKey
 ) => {
+  console.info("awardEvent:");
+
+  const parsedDefinition = parseBadgeDefinitionEvent(definitionEvent);
+  const parsedAward = parseBadgeAwardEvent(awardEvent);
+
+  // Validate award event interface
+  if (!validateEvent(awardEvent)) {
+    return Promise.reject("Award event is invalid");
+  }
+
+  // Validate definition event interface
+  if (!validateEvent(definitionEvent)) {
+    return Promise.reject("Award event is invalid");
+  }
+
+  // Validate match for award and awarded pubkey
+  if (parsedAward.awardedPubKey !== awardedPubKey) {
+    return Promise.reject("This award is not for you!");
+  }
+
+  // Validate match for award and definition pubkeys
+  if (awardEvent.pubkey !== definitionEvent.pubkey) {
+    return Promise.reject("Definition and award are not from the same author!");
+  }
+
+  // Validate match for award and definition dTag
+  if (parsedAward.dTag !== parsedDefinition.dTag) {
+    return Promise.reject("dTag must match between award and definition");
+  }
+
+  // Validate award event signature
+  if (!verifySignature(awardEvent)) {
+    return Promise.reject("Invalid award signature");
+  }
+
+  // Validate definition event signature
+  if (!verifySignature(definitionEvent)) {
+    return Promise.reject("Invalid definition signature");
+  }
+
   return Promise.resolve(true);
 };
 
@@ -53,11 +93,15 @@ export const parseBadgeDefinitionEvent = (event: Event): BadgeDefinition => {
 
 export const parseBadgeAwardEvent = (event: Event): BadgeAward => {
   const tags = parseTags(event.tags);
+  const [kind, owner, dTag] = tags.a[0][0].split(":");
 
   return {
     id: event.id,
     created_at: event.created_at,
     kind: event.kind,
     awardedPubKey: tags.p[0][0],
+    dTag,
+    definitionKind: parseInt(kind),
+    definitionOwner: owner,
   };
 };
