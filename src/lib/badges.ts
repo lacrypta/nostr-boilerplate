@@ -31,7 +31,7 @@ export const extractBadges = (event: Event): PreBadge[] => {
 export const isValidBadge = async (
   awardEvent: Event,
   definitionEvent: Event,
-  awardedPubKey
+  awardedPubKey: string
 ) => {
   const parsedDefinition = parseBadgeDefinitionEvent(definitionEvent);
   const parsedAward = parseBadgeAwardEvent(awardEvent);
