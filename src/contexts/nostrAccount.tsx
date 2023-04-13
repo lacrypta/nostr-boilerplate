@@ -49,8 +49,7 @@ export const NostrAccountProvider = ({
       await connect();
 
       // Enable nostr
-      const info = await nostr.enable();
-      console.info(info);
+      await nostr.enable();
 
       // Get public key
       const _pubKey = await nostr.getPublicKey();

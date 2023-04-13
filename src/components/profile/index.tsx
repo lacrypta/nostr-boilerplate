@@ -1,6 +1,7 @@
 import Image from "next/image";
 import TipButton from "./tip";
 import useProfile from "~/hooks/relay/useProfile";
+import BadgesList from "../badge/list";
 
 interface ProfileProps {
   pubKey: string;
@@ -45,6 +46,7 @@ export const Profile = ({ pubKey }: ProfileProps) => {
             <TipButton lnURLw={userData?.lud16} />
           </div>
         )}
+        <BadgesList pubKey={pubKey} />
       </div>
     </div>
   );
