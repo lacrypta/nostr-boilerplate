@@ -31,7 +31,7 @@ export const extractBadges = (event: Event): PreBadge[] => {
 export const isValidBadge = async (
   awardEvent: Event,
   definitionEvent: Event,
-  awardedPubKey
+  awardedPubKey: string
 ) => {
   const parsedDefinition = parseBadgeDefinitionEvent(definitionEvent);
   const parsedAward = parseBadgeAwardEvent(awardEvent);
@@ -47,7 +47,7 @@ export const isValidBadge = async (
   }
 
   // Validate match for award and awarded pubkey
-  if (parsedAward.awardedPubKey !== awardedPubKey) {
+  if (!parsedAward.awardedPubKeys.includes(awardedPubKey)) {
     return Promise.reject("This award is not for you!");
   }
 
@@ -90,6 +90,8 @@ export const parseBadgeDefinitionEvent = (event: Event): BadgeDefinition => {
 };
 
 export const parseBadgeAwardEvent = (event: Event): BadgeAward => {
+  console.info("YEAHHH BABY !event");
+  console.dir(event);
   const tags = parseTags(event.tags);
   const [kind, owner, dTag] = tags.a[0][0].split(":");
 
@@ -97,7 +99,7 @@ export const parseBadgeAwardEvent = (event: Event): BadgeAward => {
     id: event.id,
     created_at: event.created_at,
     kind: event.kind,
-    awardedPubKey: tags.p[0][0],
+    awardedPubKeys: tags.p.map((v) => v[0]),
     dTag,
     definitionKind: parseInt(kind),
     definitionOwner: owner,

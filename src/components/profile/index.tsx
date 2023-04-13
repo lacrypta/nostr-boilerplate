@@ -1,4 +1,3 @@
-import Image from "next/image";
 import TipButton from "./tip";
 import useProfile from "~/hooks/relay/useProfile";
 import BadgesList from "../badge/list";
@@ -17,7 +16,8 @@ export const Profile = ({ pubKey }: ProfileProps) => {
     <div className="text-md mb-5 flex flex-col justify-center md:flex-row">
       <div className="flex flex-row justify-center">
         {userData.picture ? (
-          <Image
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
             className="h-52 min-h-fit w-52 min-w-fit rounded-full"
             alt=""
             src={userData.picture}
