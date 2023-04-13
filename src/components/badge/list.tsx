@@ -9,7 +9,7 @@ export const BadgesList = ({ pubKey }: BadgesListProps) => {
   const { data: preBadges } = useProfileBadges(pubKey);
 
   return (
-    <div className="mt-2 hidden flex-row justify-center space-x-2">
+    <div className="mt-4 flex flex-row justify-center space-x-4">
       {preBadges.map((badge) => (
         <Badge key={badge.award.id} preBadge={badge} />
       ))}

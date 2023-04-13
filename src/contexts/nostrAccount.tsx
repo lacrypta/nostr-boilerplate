@@ -50,7 +50,6 @@ export const NostrAccountProvider = ({
 
       // Enable nostr
       const info = await nostr.enable();
-      console.info(info);
 
       // Get public key
       const _pubKey = await nostr.getPublicKey();

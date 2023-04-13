@@ -26,7 +26,6 @@ const Home: NextPage = () => {
     }
 
     setProfilePubKey(data as string);
-    console.info(slug);
     setIsLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug]);

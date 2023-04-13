@@ -1,7 +1,13 @@
 import { useContext, useEffect, useState } from "react";
-import { Badge, PreBadge } from "~/types/badge";
+import type { Event } from "nostr-tools";
+import type { Badge, PreBadge } from "~/types/badge";
+import {
+  isValidBadge,
+  parseBadgeAwardEvent,
+  parseBadgeDefinitionEvent,
+} from "~/lib/badges";
 import { NostrRelayContext } from "~/contexts/nostrRelay";
-import { Event } from "nostr-tools";
+import { parseTags } from "~/lib/utils";
 
 interface UseBadgeProps {
   preBadge: PreBadge;
@@ -9,22 +15,31 @@ interface UseBadgeProps {
 
 interface UseBadgeReturn {
   badge: Badge;
+  events: {
+    award: Event;
+    definition: Event;
+  };
+  isLoadingDefinition: boolean;
+  isLoadingAward: boolean;
+  isLoading: boolean;
+  valid: boolean;
 }
 
 export const useBadge = ({ preBadge }: UseBadgeProps): UseBadgeReturn => {
-  const [badge, setBadge] = useState<Badge>(preBadge as Badge);
+  const [badge, setBadge] = useState<Badge>();
   const [definitionEvent, setDefinitionEvent] = useState<Event>();
+  const [awardEvent, setAwardEvent] = useState<Event>();
   const [isLoadingDefinition, setIsLoadingDefinition] = useState<boolean>(true);
   const [isLoadingAward, setIsLoadingAward] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isValid, setIsValid] = useState<boolean>(false);
   const { relayUrls, relayPool } = useContext(NostrRelayContext);
 
   const { definition, award, awardedPubKey, relayUrl } = preBadge;
 
-  console.info("Looking for definition replaceable event...");
-
   useEffect(() => {
     // Get replaceable event definition
-    relayPool.subscribe(
+    void relayPool.subscribe(
       [
         {
           kinds: [definition.kind],
@@ -36,66 +51,75 @@ export const useBadge = ({ preBadge }: UseBadgeProps): UseBadgeReturn => {
       (event, isAfterEose) => {
         if (!definitionEvent || definitionEvent.created_at < event.created_at) {
           setDefinitionEvent(event);
-          if (isAfterEose) {
-            setIsLoadingDefinition(false);
-          }
         }
       },
-      undefined,
-      undefined,
+      undefined, // No delay
+      () => {
+        // onEose
+        setIsLoadingDefinition(false);
+      },
       {
         unsubscribeOnEose: true,
       }
     );
 
-    console.info("definitionEvent: ");
-    console.dir(definitionEvent);
-
-    console.info("Looking for award event...");
-
     void relayPool
-      .getEventById(award.id, [relayUrl], undefined)
+      .getEventById(award.id, [...relayUrls, relayUrl], undefined)
       .then((event) => {
+        setAwardEvent(event);
+      })
+      .finally(() => {
         setIsLoadingAward(false);
-        if (!event || (event.kind as number) !== 8) {
-          badge.award.valid = false;
-          return;
-        }
-
-        badge.award.created_at = event.created_at;
-        badge.award.valid = true;
       });
   }, []);
 
+  // When finished loading definition and award
   useEffect(() => {
-    console.info("******* Definition EVENT *******");
+    if (isLoadingDefinition || isLoadingAward) {
+      return;
+    }
+
+    console.info("******* [ BADGE ] *******");
+    console.info("******* Definition *******");
     console.dir(definitionEvent);
-  }, [definitionEvent]);
 
-  //   relayPool.subscribe(
-  //     [
-  //       {
-  //         kinds: [definition.kind],
-  //         authors: [definition.author],
-  //       },
-  //     ],
-  //     relayUrls,
-  //     (event, isAfterEose) => {
-  //       if (!definitionEvent || definitionEvent.created_at < event.created_at) {
-  //         setDefinitionEvent(event);
-  //         if (isAfterEose) {
-  //           setIsLoadingDefinition(false);
-  //         }
-  //       }
-  //     },
-  //     undefined,
-  //     undefined,
-  //     {
-  //       unsubscribeOnEose: true,
-  //     }
-  //   );
+    console.info("******* Award *******");
+    console.dir(awardEvent);
 
-  return { badge };
+    console.info("******* Tags *******");
+    console.dir(parseTags(definitionEvent.tags));
+
+    const _badge: Badge = {
+      definition: parseBadgeDefinitionEvent(definitionEvent),
+      award: parseBadgeAwardEvent(awardEvent),
+      relayUrl,
+    };
+
+    // Validate badge
+    isValidBadge(awardEvent, definitionEvent, awardedPubKey)
+      .then(() => {
+        console.info("VALIDATEDD!!");
+        _badge.valid = true;
+        setIsValid(true);
+      })
+      .catch((e) => {
+        _badge.valid = false;
+        setIsValid(false);
+      })
+      .finally(() => {
+        setBadge(_badge);
+        setIsLoading(false);
+      });
+  }, [isLoadingDefinition, isLoadingAward]);
+
+  return {
+    badge,
+    events: { award: awardEvent, definition: definitionEvent },
+    isLoadingDefinition,
+    isLoadingAward,
+    isLoading,
+    valid: isValid,
+  };
 };
 
 export default useBadge;
