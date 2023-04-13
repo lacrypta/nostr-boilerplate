@@ -48,7 +48,7 @@ export const useBadge = ({ preBadge }: UseBadgeProps): UseBadgeReturn => {
         },
       ],
       relayUrls,
-      (event, isAfterEose) => {
+      (event) => {
         if (!definitionEvent || definitionEvent.created_at < event.created_at) {
           setDefinitionEvent(event);
         }
@@ -71,6 +71,8 @@ export const useBadge = ({ preBadge }: UseBadgeProps): UseBadgeReturn => {
       .finally(() => {
         setIsLoadingAward(false);
       });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // When finished loading definition and award
@@ -102,7 +104,7 @@ export const useBadge = ({ preBadge }: UseBadgeProps): UseBadgeReturn => {
         _badge.valid = true;
         setIsValid(true);
       })
-      .catch((e) => {
+      .catch(() => {
         _badge.valid = false;
         setIsValid(false);
       })
@@ -110,6 +112,7 @@ export const useBadge = ({ preBadge }: UseBadgeProps): UseBadgeReturn => {
         setBadge(_badge);
         setIsLoading(false);
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoadingDefinition, isLoadingAward]);
 
   return {

@@ -1,9 +1,4 @@
-import type {
-  Badge,
-  BadgeAward,
-  BadgeDefinition,
-  PreBadge,
-} from "../types/badge";
+import type { BadgeAward, BadgeDefinition, PreBadge } from "../types/badge";
 import type { Event } from "nostr-tools";
 import { parseTags } from "./utils";
 

@@ -21,7 +21,7 @@ export const useProfile = (pubKey: string): UseProfileReturn => {
       ],
       relayUrls,
       // TODO: Validate Last version of profile
-      (event, isAfterEose, relayURL) => {
+      (event) => {
         // console.log(event, isAfterEose, relayURL);
         setData(JSON.parse(event.content) as Profile);
       }

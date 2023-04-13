@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { NostrRelayContext } from "~/contexts/nostrRelay";
-import { type OnEose, SubscriptionOptions } from "nostr-relaypool";
+import type { OnEose, SubscriptionOptions } from "nostr-relaypool";
 import type { Event } from "nostr-tools";
 interface UseEventsReturn {
   data: Event[];

@@ -14,6 +14,7 @@ export const Badge = ({ preBadge }: BadgeProps) => {
       {isLoading ? (
         "L"
       ) : (
+        // eslint-disable-next-line @next/next/no-img-element
         <img alt={badge.definition.description} src={badge.definition.image} />
       )}
     </div>
