@@ -33,8 +33,6 @@ export const isValidBadge = async (
   definitionEvent: Event,
   awardedPubKey
 ) => {
-  console.info("awardEvent:");
-
   const parsedDefinition = parseBadgeDefinitionEvent(definitionEvent);
   const parsedAward = parseBadgeAwardEvent(awardEvent);
 

@@ -92,7 +92,6 @@ export const useBadge = ({ preBadge }: UseBadgeProps): UseBadgeReturn => {
     // Validate badge
     isValidBadge(awardEvent, definitionEvent, awardedPubKey)
       .then(() => {
-        console.info("VALIDATEDD!!");
         _badge.valid = true;
         setIsValid(true);
       })
