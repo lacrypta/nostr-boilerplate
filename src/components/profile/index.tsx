@@ -17,7 +17,7 @@ export const Profile = ({ pubKey }: ProfileProps) => {
     <div className="text-md mb-5 flex flex-col justify-center md:flex-row">
       <div className="flex flex-row justify-center">
         {userData.picture ? (
-          <Image
+          <img
             className="h-52 min-h-fit w-52 min-w-fit rounded-full"
             alt=""
             src={userData.picture}
