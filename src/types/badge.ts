@@ -1,25 +1,28 @@
 export interface PreBadge {
+  definition: { author: string; dTag: string; kind: number };
   award: {
     id: string;
-    dTag: string;
   };
-  definition: { id: string };
+
+  relayUrl: string | undefined;
   awardedPubKey: string;
   isLoading: boolean;
 }
 
 export interface Badge extends PreBadge {
-  award: {
-    id: string;
-    dTag: string;
-    created_at: Date;
-  };
-
   definition: {
     id: string;
-    owner: string;
+    kind: number;
+    dTag: string;
     image: string;
+    author: string;
     description: string;
+  };
+
+  award: {
+    id: string;
+    created_at: number;
+    valid: boolean;
   };
   // awardedPubKey: string;
   isLoading: false;
