@@ -8,7 +8,7 @@ interface BadgeProps {
 export const Badge = ({ preBadge }: BadgeProps) => {
   const { badge, isLoading } = useBadge({ preBadge });
   return (
-    <div className="inline-block h-10 w-10 cursor-pointer overflow-hidden rounded-full bg-white/10 text-black transition hover:scale-125">
+    <div className="inline-block h-10 w-10 overflow-hidden rounded-full bg-white/10 text-black transition hover:scale-125">
       {isLoading ? (
         ""
       ) : (
