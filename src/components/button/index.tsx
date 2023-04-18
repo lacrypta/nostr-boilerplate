@@ -10,10 +10,12 @@ export const Button = ({ children, className, onClick }: ButtonProps) => {
   return (
     <div className={className}>
       <button
-        className="flex flex-col rounded-xl bg-white/10 p-5 text-lg text-white transition-transform ease-in-out hover:bg-white/20 active:scale-95 active:bg-white/5"
+        className="link flex flex-row justify-center items-center pt-1 pb-1 p-3 md:p-4 lg:p-3 text-sm lg:text-base font-semibold transition-transform ease-in-out active:scale-95 active:bg-white/5"
         onClick={onClick}
       >
+        <span className="z-10">
         {children}
+        </span>
       </button>
     </div>
   );
