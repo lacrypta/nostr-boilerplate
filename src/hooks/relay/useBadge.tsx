@@ -82,29 +82,37 @@ export const useBadge = ({ preBadge }: UseBadgeProps): UseBadgeReturn => {
       return;
     }
 
-    // Set badge object
-    const _badge: Badge = {
-      definition: parseBadgeDefinitionEvent(definitionEvent),
-      award: parseBadgeAwardEvent(awardEvent),
-      relayUrl,
-    };
+    try {
+      // Set badge object
+      const _badge: Badge = {
+        definition: parseBadgeDefinitionEvent(definitionEvent),
+        award: parseBadgeAwardEvent(awardEvent),
+        relayUrl,
+      };
 
-    // Validate badge
-    isValidBadge(awardEvent, definitionEvent, awardedPubKey)
-      .then(() => {
-        _badge.valid = true;
-        setIsValid(true);
-      })
-      .catch((e: unknown) => {
-        console.info("Badge is not valid!");
-        console.dir(e);
-        _badge.valid = false;
-        setIsValid(false);
-      })
-      .finally(() => {
-        setBadge(_badge);
-        setIsLoading(false);
-      });
+      // Validate badge
+      isValidBadge(awardEvent, definitionEvent, awardedPubKey)
+        .then(() => {
+          _badge.valid = true;
+          setIsValid(true);
+        })
+        .catch((e: unknown) => {
+          console.info("Badge is not valid!");
+          console.dir(e);
+          _badge.valid = false;
+          setIsValid(false);
+        })
+        .finally(() => {
+          setBadge(_badge);
+          setIsLoading(false);
+        });
+    } catch (e) {
+      console.error("Error while parsing badge");
+      console.dir(e);
+      setIsValid(false);
+      setIsLoading(false);
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoadingDefinition, isLoadingAward]);
 
