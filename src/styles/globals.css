@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* this code add CSS to button component */
+@layer utilities {
+  .link {
+    @apply bg-white/5 min-w-[120px] md:min-w-[200px] text-white uppercase relative border-[1px] border-fuchsia-700
+  }
+
+  .link::before {
+    @apply content-[''] absolute w-[100%] h-[100%] bg-gradient-to-r from-purple-950 to-fuchsia-950 top-0 left-0 scale-x-0 transition-transform ease-in-out origin-right duration-500
+  }
+
+  .link:hover::before {
+    @apply scale-x-100 origin-left
+  }
+
+  }

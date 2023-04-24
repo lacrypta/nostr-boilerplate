@@ -4,22 +4,21 @@ import Button from "../button";
 export const NotConnected = () => {
   const { login } = useNOSTR();
   return (
-    <div className="space-y-4 text-center">
-      <div>Primero necesitas la extensión en el Explorador</div>
-      <div className="flex justify-center">
+    <div className="flex justify-evenly lg:w-4/5">
+      <div className="m-4 text-center">
+        {/* <h4 className="text-lg mb-8">¿Es la primera vez por acá?</h4> */}
         <Button onClick={() => window.open("https://getalby.com/", "_blank")}>
-          Descargar Alby
+          Descarga una wallet
         </Button>
       </div>
-
-      <div>Conectá la wallet al sitio</div>
-      <div className="flex justify-center">
+      <div className="m-4 text-center">
+        {/* <h4 className="text-lg mb-8">Si tienes un usuario y una wallet instalada</h4> */}
         <Button
           onClick={() => {
             void login();
           }}
         >
-          Conectar con Alby
+          Conectar a Nostr
         </Button>
       </div>
     </div>
