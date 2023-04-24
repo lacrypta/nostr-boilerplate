@@ -33,42 +33,46 @@ export const isValidBadge = async (
   definitionEvent: Event,
   awardedPubKey: string
 ) => {
-  const parsedDefinition = parseBadgeDefinitionEvent(definitionEvent);
-  const parsedAward = parseBadgeAwardEvent(awardEvent);
+  try {
+    const parsedDefinition = parseBadgeDefinitionEvent(definitionEvent);
+    const parsedAward = parseBadgeAwardEvent(awardEvent);
 
-  // Validate award event interface
-  if (!validateEvent(awardEvent)) {
-    return Promise.reject("Award event is invalid");
-  }
+    // Validate award event interface
+    if (!validateEvent(awardEvent)) {
+      throw new Error("Award event is invalid");
+    }
 
-  // Validate definition event interface
-  if (!validateEvent(definitionEvent)) {
-    return Promise.reject("Award event is invalid");
-  }
+    // Validate definition event interface
+    if (!validateEvent(definitionEvent)) {
+      throw new Error("Award event is invalid");
+    }
 
-  // Validate match for award and awarded pubkey
-  if (!parsedAward.awardedPubKeys.includes(awardedPubKey)) {
-    return Promise.reject("This award is not for you!");
-  }
+    // Validate match for award and awarded pubkey
+    if (!parsedAward.awardedPubKeys.includes(awardedPubKey)) {
+      throw new Error("This award is not for you!");
+    }
 
-  // Validate match for award and definition pubkeys
-  if (awardEvent.pubkey !== definitionEvent.pubkey) {
-    return Promise.reject("Definition and award are not from the same author!");
-  }
+    // Validate match for award and definition pubkeys
+    if (awardEvent.pubkey !== definitionEvent.pubkey) {
+      throw new Error("Definition and award are not from the same author!");
+    }
 
-  // Validate match for award and definition dTag
-  if (parsedAward.dTag !== parsedDefinition.dTag) {
-    return Promise.reject("dTag must match between award and definition");
-  }
+    // Validate match for award and definition dTag
+    if (parsedAward.dTag !== parsedDefinition.dTag) {
+      throw new Error("dTag must match between award and definition");
+    }
 
-  // Validate award event signature
-  if (!verifySignature(awardEvent)) {
-    return Promise.reject("Invalid award signature");
-  }
+    // Validate award event signature
+    if (!verifySignature(awardEvent)) {
+      throw new Error("Invalid award signature");
+    }
 
-  // Validate definition event signature
-  if (!verifySignature(definitionEvent)) {
-    return Promise.reject("Invalid definition signature");
+    // Validate definition event signature
+    if (!verifySignature(definitionEvent)) {
+      throw new Error("Invalid definition signature");
+    }
+  } catch (e: unknown) {
+    return Promise.reject((e as Error).message);
   }
 
   return Promise.resolve(true);
@@ -90,7 +94,6 @@ export const parseBadgeDefinitionEvent = (event: Event): BadgeDefinition => {
 };
 
 export const parseBadgeAwardEvent = (event: Event): BadgeAward => {
-  console.info("YEAHHH BABY !event");
   console.dir(event);
   const tags = parseTags(event.tags);
   const [kind, owner, dTag] = tags.a[0][0].split(":");
